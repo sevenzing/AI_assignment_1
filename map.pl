@@ -27,8 +27,8 @@ home(2-8).
 mask(5-2).
 */
 
-covid(2-1).
-covid(1-2).
+covid(2-3).
+covid(3-2).
 doctor(1-5).
 home(5-5).
 mask(1-4).
