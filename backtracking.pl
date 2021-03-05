@@ -7,15 +7,11 @@
 :-use_module(pointTools).
 :-use_module(covid).
 
-% import map
-:-use_module(map).
 
-
-distanceToHome(Point, D) :-
-    home(X-Y),
-    cellDistance(Point, X-Y, D).
-
-
+/*
+    Return adjacent Point to `From`,
+    If there are many of them, return in ascending order of distance to the house
+*/
 findNext(From, Next) :- 
     % find all adjacent points to From
     findall(P, adjacentPoints(From, P), PossibleMoves),
@@ -24,7 +20,7 @@ findNext(From, Next) :-
     map_list_to_pairs(distanceToHome, PossibleMoves, Pairs),
     % Just sort by distances
     keysort(Pairs, SortedPairs),
-    % get values (remove distances from list)
+    % get values (remove keys from list)
     pairs_values(SortedPairs, ResultPoints),
     % yeild elements from ResultPoints
     member(Next, ResultPoints).
@@ -38,16 +34,16 @@ backtracking(From, To, CompletedPath, MaxLength, ThePath) :-
     mooreDistance(From, To, MinimalDistanceToHome),
     MinimalDistanceToHome - Length + 1 #=< MaxLength,
 
-    % Next = adjacentPoints(From)
+    % for Next in adjacentPoints(From):
     findNext(From, Next),
-    
-    % check if next cell is ok
-    validCell(Next, CompletedPath),
-    
-    append(CompletedPath, [Next], NewCompletedPath),
-
-    backtracking(Next, To, NewCompletedPath, MaxLength, PathFromRecursion),
-    
-    ThePath = [Next|PathFromRecursion].
+        % check if next cell is ok
+        validCell(Next, CompletedPath),
+        
+        % NewCompletedPath = CompletedPath + [Next]
+        append(CompletedPath, [Next], NewCompletedPath),
+        % PathFromRecursion = backtracking(...)
+        backtracking(Next, To, NewCompletedPath, MaxLength, PathFromRecursion),
+        % return [Next] + PathFromRecursion
+        ThePath = [Next|PathFromRecursion].
 
 

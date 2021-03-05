@@ -3,9 +3,12 @@
     adjacentPoints/2,
     adjacentOrEqualPoints/2,
     cellDistance/3,
-    mooreDistance/3
+    mooreDistance/3,
+    distanceToHome/2
     ]).
 :-use_module(library(clpfd)).
+:-use_module(map).
+
 
 /*
     Are two points equal?
@@ -31,12 +34,6 @@ cellDistance(X1-Y1, X2-Y2, D) :-
 mooreDistance(X1-Y1, X2-Y2, D) :-
     D is max(abs(X1 - X2), abs(Y1 - Y2)).
 
-
-
-
-
-
-
-    
-    
-    
+distanceToHome(Point, D) :-
+    home(X-Y),
+    cellDistance(Point, X-Y, D).
