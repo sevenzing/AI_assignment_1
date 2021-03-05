@@ -1,5 +1,5 @@
 :- module(drawing, [
-    draw_maze/5
+    draw_maze/1
     ]).
 
 :-use_module(library(clpfd)).
@@ -7,12 +7,18 @@
 :-use_module(config).
 :-use_module(tools).
 :-use_module(pointTools).
+:-use_module(map).
 
 
-
-draw_maze(HomeP, DoctorP, MaskP, CovidsPs, ThePath) :-
+draw_maze(Path) :-
     mazeSize(MSize),
-    draw_maze_helper(0-0, MSize, HomeP, DoctorP, MaskP, CovidsPs, ThePath).
+    % CovidPs = [1-1, 2-3, ... ]
+    findall(X, covid(X), CovidsPs),
+    home(HomeP),
+    doctor(DoctorP),
+    mask(MaskP),
+
+    draw_maze_helper(0-0, MSize, HomeP, DoctorP, MaskP, CovidsPs, Path).
 
 draw_maze_helper(X-Y, M, _, _, _, _, _) :-
     X #= 0,
@@ -45,33 +51,31 @@ draw_maze_helper(X-Y, MSize, HomeP, DoctorP, MaskP, CovidsPs, ThePath) :-
 
 draw_point(Point, HomeP, DoctorP, MaskP, CovidsPs, ThePath) :-
     (
+        actor(StartPoint),
+        equalPoints(Point, StartPoint),
+        write("@ ")
+    );
+    
+    (
         equalPoints(Point, HomeP),
-        write("H ")
+        ((member(Point, ThePath), write("h ")); write("H "))
     );
     
     (
         equalPoints(Point, DoctorP),
-        write("D ")
+        ((member(Point, ThePath), write("d ")); write("D "))
     );
 
     (
         equalPoints(Point, MaskP),
-        write("M ")
+        ((member(Point, ThePath), write("m ")); write("M "))
     );
 
     (
         member(Point, CovidsPs),
-        write("C ")
+        ((member(Point, ThePath), write("c ")); write("C "))
     );
-    
+
     (
-        member(Point, ThePath),
-        write("o ")
-    );
-
-    write(". ").
-
-
-
-    
-
+        ((member(Point, ThePath), write("o ")); write(". "))
+    ).

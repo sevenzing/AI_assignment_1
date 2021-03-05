@@ -3,35 +3,51 @@
     ]).
 
 :-use_module(library(clpfd)).
-:-use_module(tools).
+
 :-use_module(pointTools).
+:-use_module(covid).
 
-backtracking(HomePoint, DoctorPoint, MaskPoint, CovidsPoints, ThePath):-
-    backtracking_helper(0-0, HomePoint, [], DoctorPoint, MaskPoint, CovidsPoints, ThePath).
+% import map
+:-use_module(map).
 
-/*
-    If actor reaches home
-*/
-backtracking_helper(ActorPoint, HomePoint, V, _, _, _, P) :-
-    % if not equalPoints(ActorPoint, HomePoint): return
-    equalPoints(ActorPoint, HomePoint),
-    % return V.append(ActorPoint)
-    append(V, [ActorPoint], P).
 
-/*
-    We did't reach the home, try to make a step
-*/
-backtracking_helper(ActorPoint, HomePoint, Visited, DoctorPoint, MaskPoint, CovidsPoints, ThePath):-
-    % PossibleMove = adjacentPoints(ActorPoint)
-    adjacentPoints(ActorPoint, PossibleMove),
-    % Visited_ = Visited.append(ActorPoint)
-    append(Visited, [ActorPoint], Visited_),
+distanceToHome(Point, D) :-
+    home(X-Y),
+    cellDistance(Point, X-Y, D).
+
+
+findNext(From, Next) :- 
+    % find all adjacent points to From
+    findall(P, adjacentPoints(From, P), PossibleMoves),
+    % assign distance to home for every point.
+    % Pairs = [Cost1-Point1, Cost2-Point2, ... ]
+    map_list_to_pairs(distanceToHome, PossibleMoves, Pairs),
+    % Just sort by distances
+    keysort(Pairs, SortedPairs),
+    % get values (remove distances from list)
+    pairs_values(SortedPairs, ResultPoints),
+    % yeild elements from ResultPoints
+    member(Next, ResultPoints).
     
-    % if not inMaze(PossibleMove): return
-    % if member(PossibleMove, Visited_): return
-    inMaze(PossibleMove), not(member(PossibleMove, Visited_)),
+backtracking(X, X, _, _, []).
+backtracking(From, To, CompletedPath, MaxLength, ThePath) :-
+    % if length of path greater than possible, than return false
+    length(CompletedPath, Length),
     
-    % return backtracking_helper( ... )
-    backtracking_helper(PossibleMove, HomePoint, Visited_, DoctorPoint, MaskPoint, CovidsPoints, ThePath).
+    Length #=< MaxLength,
+    mooreDistance(From, To, MinimalDistanceToHome),
+    MinimalDistanceToHome - Length + 1 #=< MaxLength,
+
+    % Next = adjacentPoints(From)
+    findNext(From, Next),
+    
+    % check if next cell is ok
+    validCell(Next, CompletedPath),
+    
+    append(CompletedPath, [Next], NewCompletedPath),
+
+    backtracking(Next, To, NewCompletedPath, MaxLength, PathFromRecursion),
+    
+    ThePath = [Next|PathFromRecursion].
 
 

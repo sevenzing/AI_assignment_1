@@ -5,4 +5,4 @@
 
 
 vision(1).
-mazeSize(5).
+mazeSize(6).

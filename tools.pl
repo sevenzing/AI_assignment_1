@@ -11,4 +11,7 @@
 */
 inMaze(X-Y) :-
     mazeSize(MSize),
-    [X, Y] ins 0..MSize.
+    X #>= 0,
+    X #< MSize,
+    Y #>= 0,
+    Y #< MSize.
