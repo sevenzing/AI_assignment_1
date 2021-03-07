@@ -1,10 +1,12 @@
 :- module(covid, [
-    validCell/2
+    validCell/2,
+    inCovidZone/1
     ]).
 
 :-use_module(library(clpfd)).
 :-use_module(pointTools).
-:-use_module(tools).
+
+% import map
 :-use_module(map).
 
 inCovidZone(Cell) :-

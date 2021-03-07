@@ -4,9 +4,12 @@
     adjacentOrEqualPoints/2,
     cellDistance/3,
     mooreDistance/3,
-    distanceToHome/2
+    distanceToHome/2,
+    inMaze/1
     ]).
 :-use_module(library(clpfd)).
+
+% import map
 :-use_module(map).
 
 
@@ -37,3 +40,10 @@ mooreDistance(X1-Y1, X2-Y2, D) :-
 distanceToHome(Point, D) :-
     home(X-Y),
     cellDistance(Point, X-Y, D).
+
+inMaze(X-Y) :-
+    mazeSize(MSize),
+    X #>= 0,
+    X #< MSize,
+    Y #>= 0,
+    Y #< MSize.

@@ -5,8 +5,9 @@
 :-use_module(library(clpfd)).
 
 :-use_module(config).
-:-use_module(tools).
 :-use_module(pointTools).
+
+% import map
 :-use_module(map).
 
 

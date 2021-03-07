@@ -1,8 +1,9 @@
-:-use_module(backtracking).
-:-use_module(drawing).
-:-use_module(map).
 :-use_module(library(clpfd)).
-:-use_module(config).
+:-use_module(backtracking).
+:-use_module(a_star).
+:-use_module(drawing).
+% import map
+:-use_module(map).
 
 bt_search :-
     % draw empty map
@@ -21,3 +22,10 @@ bt_search :-
 
         write(FoundPath),nl,
         draw_maze(FoundPath).
+
+
+a_star :- 
+    draw_maze([]), nl,
+    find_astar_path(FoundPath),
+    write(FoundPath), nl,
+    draw_maze(FoundPath).
