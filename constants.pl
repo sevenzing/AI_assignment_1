@@ -1,4 +1,4 @@
-:- module(config, [ 
+:- module(constants, [ 
     infty/1
     ]).
 

@@ -5,7 +5,7 @@
 
 
 :-use_module(library(clpfd)).
-:-use_module(constansts).
+:-use_module(constants).
 
 % import map
 :-use_module(map).
