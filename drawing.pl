@@ -54,7 +54,7 @@ draw_point(Point, HomeP, DoctorP, MaskP, CovidsPs, ThePath) :-
     (
         actor(StartPoint),
         equalPoints(Point, StartPoint),
-        write("@ ")
+        write("A ")
     );
     
     (

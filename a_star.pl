@@ -18,19 +18,7 @@
 :-use_module(map).
 
 
-/*
-Cell   = X-Y
-Point  = Cell-CovidSafeFlag = X-Y-{0,1}
-
-Costs = mapping (Point -> int[Cost])
-ToVisit = [ Point ]
-VisitedList = [ Point ]
-ParentList = mapping (Cell -> Cell)
-
-*/
-
 heuristic(Point, Result) :-
-    % unpack point to cell
     Point = Cell-_,
     home(Home),
     mooreDistance(Cell, Home, Result).

@@ -12,6 +12,8 @@
 
 
 /*
+So, the logic is simple
+
 Cell   = X-Y
 Point  = Cell-CovidSafeFlag = X-Y-{0,1}
 
@@ -19,6 +21,9 @@ Costs = mapping (Point -> int[Cost])
 ToVisit = [ Point ]
 VisitedList = [ Point ]
 ParentList = mapping (Cell -> Cell)
+
+For mapping, let's use assoc library
+https://eu.swi-prolog.org/pldoc/man?section=assoc
 
 */
 
@@ -58,7 +63,7 @@ initialAssignParentList(X-Y, OldParentList, ResultParentList) :-
     put_assoc(X-Y-1, OldParentList1, INFTY-INFTY-0, ResultParentList).
 
 /*
-Initialize vertex list
+    Initialize vertex list
 */
 initializeCosts(Costs) :-
     initializeAssoc(initialAssignCosts, Costs).
