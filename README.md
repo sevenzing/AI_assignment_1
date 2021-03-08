@@ -10,6 +10,9 @@ All test functions are in `main.pl`. In order to run it, follow these steps:
     
 + Or choose existing map in `maps/` directory and copy content in `map.pl` (I would suggest to start with `easy_map.pl`)
 
++ Change the `mazeSize(M).` to desired one, to change size of a map.
++ You can set any positive number of covids, masks and doctors
+
 ### 2. Run A* search
 
 ```console
