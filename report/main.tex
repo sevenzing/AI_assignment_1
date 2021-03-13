@@ -143,7 +143,10 @@
 I implemented two algorithms: backtracking and A*
 \subsection{Backtracking}
 Backtracking solves problem recursively, considering every possible combination in order find path to home.
-In order to increase performance of the algorithm, it is reasonable to introduce some optimization. For instance, on a recursion step, we can check validness of next movement, introduce maximum length of the path and do not enter already visited cells.
+In order to increase performance of the algorithm, it is reasonable to introduce some optimization. For instance, on a recursion step, we can check validness of next movement, introduce maximum length of the path and do not enter already visited cells. 
+
+% due to mechanics
+
 \subsection{A*}
 As the second algorithm, I decided to choose A*.
 Basically, the algorithm uses heuristic to find path. So, for every point we assign a number that shows a certain heuristic value. The logic for selecting a number may vary. In my algorithm I use the number of cells from point to the home:
@@ -160,15 +163,38 @@ However, we should consider mask/doctor effect, so we need some modification of 
 
 
 \section{Comparison or two algorithms}
+% online claculators for testing hypothesis
+% N_0 is that there is not difference
+
+% how many test maps ? 2-3
+% 
+
+% completly igonring covid 
+
+% sunmission
+% PDF, README, source code
+
+% CLEAR INSTRUCTIONS!
+
+%%% Null hypothesis - Alternate hypothesis
+
+% | reject
+% | fail to reject
+
+% P value - confidence 
+
+% DO "P-value test" !
+
 
 Actually, there is no difference between two scenarios of perceiving COVID in my algorithms:
 
 \begin{itemize}
-    \item \textbf{Backtracking} takes into account only the adjacent cells, it can not look ahead to the \C
-    \item For \textbf{A*}, it is possible to consider forbidden cells from the \C in heuristic function. But it is completely not clear how to add this information to the function. Furthermore, it will not give an advantage because the actor will be less likely go the \C, which on most maps may be the wrong approach.
+    \item \textbf{Backtracking} takes into account only the adjacent cells and completely ignoring information about \C, except that it removes infected cells adjacent cells. So, it can not look ahead to the \C
+    
+    \item For \textbf{A*}, it is possible to consider forbidden cells from the \C in heuristic function. However it is completely not clear how to add this information to the function. I tried different ways of adding vision of \C in heuristic function, and it did not affect the time anyhow.
 \end{itemize}
 
-Consequently, we will discuss only 
+Consequently, since I found no difference between those two scenarios, I will discuss only
 
 \textbf{Backtracking (variant 1) compared to 2nd algorithm (variant 1)}
 
@@ -201,7 +227,7 @@ In order to compare performance of two algorithms, let's construct 3 maps with d
                8 . . . . . . . . .      8 H . . . . . . . . 
 \end{verbatim}
 
-And let's run all 3 algorithms 100 times on all 3 the maps:
+And let's run all 3 algorithms 20 times on all 3 maps:
 \begin{center}
     
 
@@ -209,15 +235,26 @@ And let's run all 3 algorithms 100 times on all 3 the maps:
 \hline
 \multirow{2}{*}{Map\textbackslash{}Algorithm} & \multicolumn{2}{l|}{Backtracking} & \multicolumn{2}{l|}{A*} \\ \cline{2-5} 
                                               & \# of steps         & average time & \# of steps    & average time\\ \hline
-Easy map                                      & 6                   &0.0345 s     & 6              &0.0205 s \\ \hline
-Normal map                                    & 17                 & 78.3298 s    & 17             &0.0412 s        \\ \hline
+Easy map                                      & 6                   &0.0342 s     & 6              &0.0204 s \\ \hline
+Normal map                                    & 17                 & 78.3215 s    & 17             &0.041 s        \\ \hline
 Hard map                                      &-&too long&19&0.0857 s\\ \hline
 \end{tabular}
 \end{center}
 
+\subsection{P-value test}
+Since there is no way to calculate mean time for backtracking in Hard map in reasonable time, let's calculate t-value and p-value for first two maps. (You can find the data in \textbf{data.txt} attached file.)
+Let's choose null hypothesis as "Two algorithms are the same and have the same distribution of time-consuming" and significance level as $0.05$
+
+\\
+Using \url{https://www.socscistatistics.com/tests/studentttest/default2.aspx} we get $$t_{value} = -6.24526 \text{, so }p_{value} < 0.05$$
+
+Therefore, we \textbf{reject} the null hypothesis.
+
+\subsection{Conclusion}
+
 So, as you can see, \textbf{backtracking} is much worse than \textbf{A*} in terms of time-consuming. Actually, A* can find path in rather big maze in a fairly reasonable time (500x500 in 16 seconds), while backtracking will try to find all possible combinations and will not be able to meet a reasonable amount of time.
 \\
-However, it is not fair to say that A* is better than backtracking. Prolog is not intended for implementing algorithms such as A* or Dijkstra. To achieve this goal, you have to use a lot of workarounds, creating complex data structures and turning each loop into a recursion. Thus, the implementation of a simple algorithm turns into a complex challenge. While backtracking is built into the prolog and its implementation takes several lines.
+However, it is not fair to say that A* is better than backtracking. Prolog is not intended for implementing algorithms such as A* or Dijkstra. To achieve this goal, you have to use a lot of workarounds, creating complex data structures and turning each loop into a recursion. Thus, the implementation of a simple algorithm turns into a complex challenge. While backtracking is built into the prolog and its implementation takes several lines. Therefore, you have to spent more time to create A*, rather than backtracking.
 
 \section{Impossible to solve maps}
 
